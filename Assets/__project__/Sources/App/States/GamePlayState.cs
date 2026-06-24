@@ -22,6 +22,7 @@ public class GamePlayState : ScreenState<GamePlayScreen>, IScreenState {
 
     protected override void OnStateEnter() {
         Screen.OnButtonClick<PauseGameButton>(_tryExitGameCommand);
+        Screen.DisplayHints();
     }
 
     protected override void OnStateExit() {
