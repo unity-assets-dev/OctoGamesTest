@@ -8,7 +8,7 @@ Unity projects that mix:
 Explain why they matter and where you apply them.
 
 Основной подход, который я использую в реальных проектах - поддержать изолированность всех систем. Игровые сущности сами по себе, UI - отдельно, данные - тоже отдельно, 
-зачастую их лучше выносить в отдельные удаленные сервисы - например на сервер\таблицу\firebase.
+зачастую их лучше выносить в отдельные удаленные сервисы для дизайнеров - например на сервер\таблицу\firebase.
 
 Второй по важности подход - следить за производительностью, утечками памяти и подписками. Вероятно, этот вопрос с подвохом и тут я должен написать что-то банальное)
 
@@ -26,12 +26,12 @@ public abstract class SerializableData<T> {
     
     public static void Serialize(T data) {
         var source = data.Serialize(); // Serialize into the string (by extension for JSON.net);
-        
-#if UNITY_EDITOR
+        PlayerPrefs.SetString(Key, source);
+/*#if !UNITY_EDITOR
         PlayerPrefs.SetString(Key, source);
 #else
         ES3.Save(source, Key);
-#endif
+#endif*/
     }
 
     public static T Deserialize(T defaults = default) {
@@ -119,8 +119,8 @@ public class CharactersView : MonoBehaviour {
 
 ```
 public class CharactersView : MonoBehaviour {
-	[SerializedField] private Text _textField;
-	[SerializedField] private List<Character> _characters;
+	[SerializeField] private Text _textField;
+	[SerializeField] private List<Character> _characters;
 	
 	private float _timer;
 	
@@ -151,7 +151,7 @@ public class CharactersView : MonoBehaviour {
 			
 		// alt: string text = $"Characters: {characterCount} Avg value: {totalValue / characterCount}";
 			
-		_textField = text;
+		_textField.text = text;
 		Debug.Log(text);
 	}
 	
@@ -171,7 +171,7 @@ public class CharactersView : MonoBehaviour {
 	private void OnCharacterListUpdated(int count, float avg) {
 		string text = $"Characters: {count} Avg value: {avg}";
 			
-		_textField = text;
+		_textField.text = text;
 		Debug.Log(text);
 	}
 	
@@ -185,7 +185,7 @@ public class CharactersView : MonoBehaviour {
 		// ... _characters.CharacterChanged.RemoveListener(OnCharacterListUpdated);
 	}
 	
-	private void OnCharacterValueChanged(Character character) {
+	private void OnCharacterValueChanged(Character _) {
 		int characterCount = _characters.Count;
 		float totalValue = 0f;
 		
@@ -201,7 +201,7 @@ public class CharactersView : MonoBehaviour {
 			
 		// alt: string text = $"Characters: {characterCount} Avg value: {totalValue / characterCount}";
 			
-		_textField = text;
+		_textField.text = text;
 		Debug.Log(text);
 	}
 }
@@ -210,5 +210,9 @@ public class CharactersView : MonoBehaviour {
 
 ##5. Gameplay / State Logic (3D + Systems Thinking)
 
-В качестве теста, я реализовал простую систему из контроллера, который управляет состоянием игры и фабрики, которая
-отвечает за создание и наблюдение за сущностями.
+В качестве теста, я реализовал простую систему из контроллера, который управляет состоянием игры и фабрики, 
+контроллер агрегирует и управляет состоянием персонажей, а фабрика уже разбирается конкретно - как создавать, освобождать ресурсы. 
+Так же, для примера я подключил обновление данных о кол-ве актеров на сцене.
+Простая и наглядная система - главная рабочая. Легко замещается на пул, без переделок и так же поддается оптимизации, 
+за счет прямого контроля списка актеров. Ну, и главное, что все сосредоточено в конкретных местах, а не разбросано по коду - 
+достаточно легко ослеживается переходам по методам в райдере или студии.
