@@ -1,4 +1,7 @@
-[PresenterOf(typeof(MainMenuState))]
+[PresenterOf(
+    typeof(MainMenuState),
+    typeof(GamePlayState)
+    )]
 public class PlayerDataPresenter : IPresenter {
     private readonly PlayerModel _playerData;
 
