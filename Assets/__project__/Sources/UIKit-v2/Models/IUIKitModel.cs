@@ -1,3 +1,1 @@
-public interface IUIKitModel {
-    
-}
+public interface IUIKitModel {}

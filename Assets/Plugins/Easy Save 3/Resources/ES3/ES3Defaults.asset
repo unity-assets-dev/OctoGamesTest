@@ -31,14 +31,12 @@ MonoBehaviour:
     assemblyNames:
     - Assembly-CSharp-firstpass
     - NaughtyAttributes.Core
-    - MCPForUnity.Runtime
     - Zenject
     - PPv2URPConverters
-    - MCPForUnity.Editor
     - NaughtyAttributes.Editor
-    - Assembly-CSharp
     - NaughtyAttributes.Test
     - PrimeTween.Editor
+    - Assembly-CSharp
     - PrimeTween.Runtime
     - PrimeTween.Tests
     - PrimeTween.Tests.Editor

@@ -1,6 +1,8 @@
 public class MainMenuState : ScreenState<MainMenuScreen>, IScreenState {
-    
-    public MainMenuState(MainMenuScreen screen) : base(screen) {
+    private readonly PlayerModel _playerData;
+
+    public MainMenuState(PlayerModel playerData, MainMenuScreen screen) : base(screen) {
+        _playerData = playerData;
     }
 
     protected override void OnStateEnter() {
