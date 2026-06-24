@@ -5,6 +5,10 @@ public interface IPlayerDataHandler {
     void UpdateCoins(int coins);
 }
 
+public interface IPlayerCharactersHandler {
+    void UpdateCharacterCount(int value);
+}
+
 public class MainMenuScreen : MenuScreen, IPlayerDataHandler {
 
     [SerializeField] private TMP_Text _coinsField;

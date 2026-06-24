@@ -13,6 +13,10 @@ public class PlayerDataPresenter : IPresenter {
         if (screen is IPlayerDataHandler handler) {
             _playerData.Coins.AddListener(coins => handler.UpdateCoins(coins));    
         }
+        
+        if (screen is IPlayerCharactersHandler charactersHandler) {
+            _playerData.CharactersCount.AddListener(count => charactersHandler.UpdateCharacterCount(count));    
+        }
     }
 
     public void BeforeExit(IStateScreen screen) {

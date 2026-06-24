@@ -6,6 +6,7 @@ public class PlayerModelData : SerializableData<PlayerModelData> {
 public class PlayerModel: IUIKitModel {
 
     public IObservableField<int> Coins { get; } = new ObservableField<int>();
+    public IObservableField<int> CharactersCount { get; } = new ObservableField<int>();
     public IObservableField<bool> FirstRun { get; } = new  ObservableField<bool>();
 
     public PlayerModel() {

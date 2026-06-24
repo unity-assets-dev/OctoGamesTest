@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameController : MonoBehaviour {
     [SerializeField] private ActorFactory _factory;
@@ -7,19 +8,25 @@ public class GameController : MonoBehaviour {
     [SerializeField] private int _minActors = 5;
     [SerializeField] private int _maxActors = 15;
 
-    public void StartGame() {
-        Enumerable.Range(0, Random.Range(_minActors, _maxActors)).EachNonAlloc(index => {
+    public UnityEvent<int> CharacterCount { get; } = new ();
+    
+
+    public void StartGame(int actorCount) {
+        Enumerable.Range(0, actorCount).EachNonAlloc(index => {
             var position = Random.insideUnitSphere.normalized * 5;
             position.y = 0;
             var actor = _factory.CreateActor<Character>(position);
             actor.HealthChanged.AddListener(OnCharacterHealthChanged);
         });
+        
+        CharacterCount?.Invoke(_factory.Count());
     }
 
     private void OnCharacterHealthChanged(Character actor, int health) {
         if (health <= 0) {
             actor.HealthChanged.RemoveAllListeners();
             _factory.DisposeActor(actor);
+            CharacterCount?.Invoke(_factory.Count());
         }
     }
 

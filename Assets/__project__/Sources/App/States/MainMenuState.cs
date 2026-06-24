@@ -5,7 +5,7 @@ public class MainMenuState : ScreenState<MainMenuScreen>, IScreenState {
     public MainMenuState(PlayerModel playerData, GameController gameController, MainMenuScreen screen) : base(screen) {
         _playerData = playerData;
         _startGameCommand = IButtonCommand.Create(() => {
-            gameController.StartGame();
+            
             Router.ChangeState<GamePlayState>();
         });
     }
